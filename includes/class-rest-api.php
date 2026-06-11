@@ -126,21 +126,21 @@ class FSA_Rest_API {
 				COALESCE(SUM(total_net),0) AS revenue_net,
 				COALESCE(SUM(discount),0) AS discount,
 				COALESCE(SUM(items_count),0) AS items,
-				COALESCE(SUM(is_returning),0) AS returning
+				COALESCE(SUM(is_returning),0) AS ret_count
 			FROM {$ot} WHERE day BETWEEN %s AND %s",
 			$from, $to
 		), ARRAY_A );
 
-		$orders = (int) $row['orders'];
+		$orders = $row ? (int) $row['orders'] : 0;
 		return array(
 			'orders'         => $orders,
-			'revenue_gross'  => (float) $row['revenue_gross'],
-			'revenue_net'    => (float) $row['revenue_net'],
-			'discount'       => (float) $row['discount'],
-			'items'          => (int) $row['items'],
+			'revenue_gross'  => $row ? (float) $row['revenue_gross'] : 0,
+			'revenue_net'    => $row ? (float) $row['revenue_net'] : 0,
+			'discount'       => $row ? (float) $row['discount'] : 0,
+			'items'          => $row ? (int) $row['items'] : 0,
 			'aov'            => $orders ? round( $row['revenue_gross'] / $orders, 2 ) : 0,
 			'items_per_order' => $orders ? round( $row['items'] / $orders, 2 ) : 0,
-			'returning_rate' => $orders ? round( $row['returning'] / $orders * 100, 1 ) : 0,
+			'returning_rate' => $orders ? round( $row['ret_count'] / $orders * 100, 1 ) : 0,
 		);
 	}
 
