@@ -191,7 +191,7 @@ class FSA_Aggregator {
 				'day'           => $date,
 				'status'        => $order->get_status(),
 				'total'         => round( $total, 2 ),
-				'total_net'     => round( $total - $tax, 2 ),
+				'total_net'     => round( $total - $tax - $shipping, 2 ),
 				'shipping'      => round( $shipping, 2 ),
 				'discount'      => round( $discount, 2 ),
 				'items_count'   => $items_count,
